@@ -5,6 +5,7 @@
   window.connection = new WebSocket(websocket_host);
 
   connection.onopen = function(event) {
+    //second argument is our specific wit instance
       connection.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
   };
 
