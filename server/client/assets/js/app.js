@@ -28,22 +28,36 @@ app.controller('HostController', ['$scope', '$interval', '$routeParams', functio
   timbre.init($routeParams.name, console.log.bind(console));
   $scope.interview = [];
   $scope.hostName = $routeParams.name;
-  $scope.wasCalled = false;
-  $scope.called = function(){
-    timbre.on('transcribe', function(transcription) {
-      $scope.interview.push(transcription);
-    });
-    $socket.on('transcript', function (transcription) {
-      console.log('received a transcription');
-      $scope.interview.push(transcription);
+  var called = function() {
+    $http.get('/call/$routeParams.name').success(function(data) {
+      if (data) {
+        timbre.on('transcribe', function(transcription) {
+          $scope.interview.push(transcription);
+        });
+        window.setInterval(getTranscriptions(), 5000);
+      } else {
+        window.setInterval(called, 2500);
+      }
     });
   };
+  var getTranscriptions = function() {
+    $http.get('/transcription').success(function(data) {
+      if (data) {
+        $scope.interview.push(transcription);
+      }
+    });
+  };
+  called();
 }]);
 
-app.controller('GuestController', ['$scope','$routeParams', function($scope, $routeParams){
+app.controller('GuestController', ['$scope','$routeParams', '$httpProvider', function($scope, $routeParams, $httpProvider){
   timbre.init($routeParams.name, console.log.bind(console));
   $scope.me = "guest";
   $scope.guestName = $routeParams.name;
+  $scope.called = function () {
+    timbre.call($scope.toCall)
+    $http.post('http://localhost:3000/call', {name: $scope.toCall});
+  };
   $socket.on('call',
     function(data) {
     console.log('received a call with ' + data);
