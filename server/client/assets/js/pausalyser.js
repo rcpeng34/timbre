@@ -10,7 +10,7 @@
   var connect = function (cb) {
     var witsock = new WebSocket(WEBSOCKET_HOST);
 
-    witock.onopen = function(e) {
+    witsock.onopen = function(e) {
       guestSock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
 
       // Process audio
