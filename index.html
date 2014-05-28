@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<title>Stenographer</title>
+		<style>
+
+* {margin: 0; padding: 0; border: 0; box-sizing: border-box; text-decoration: none; outline: none;}
+
+body {
+	font: 18px/28px Georgia;
+	}
+
+header {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 60px;
+	background: rgba(255,255,255,0.95);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+	}
+		
+	h1 {
+		margin: 0 auto;
+		padding: 0 15px;
+		max-width: 800px;
+		font: bold 18px/60px Lucida Grande;
+		text-align: left;
+		}
+	
+	h1:hover {
+		opacity: .5;
+		cursor: pointer;
+	}
+	
+	h1:focus {
+		opacity: 1;
+		cursor: text;
+		font-style: italic;
+	}
+
+main {
+	padding: 60px 15px 10px 15px;
+	margin: 0 auto;
+	max-width: 800px;
+	}
+	
+	p {
+		clear: both;
+		margin: 2em 0;
+		padding: 0 0 5px 16px;
+	}
+	
+	p.user1 {
+		margin-left: 30%;
+		}
+	p:not(.user1) {
+		margin-right: 30%;
+		border-left: 7px solid #4A90E2;
+		}
+	
+	p.user3 {border-color: #F5A623}
+	
+	time {
+		display: block;
+		color: #999;
+		font: bold 12px/16px Lucida Grande;
+		}
+	
+	/* not working yet, need rested brain */
+	/* icon of sound will be user color */
+	/* and animated like the loading svg */
+	
+	.talking {
+		float: left;
+		margin: 1em 1em 2em 0;
+		}
+	
+	.talking.user1 {fill: #000}
+	.talking.user2 {fill: #4A90E2}
+	.talking.user2 {fill: #F5A623}	
+	
+	
+		
+		</style>
+		
+	</head>
+	<body>	
+		<header>
+			<h1 contenteditable>Nixon Interview</h1>
+		</header>
+		<main>
+			<p class="user1"><time>1:23:45</time> Would you say that there are certain situations - and the Huston Plan was one of them - where the president can decide that it's in the best interests of the nation, and do something illegal?</p>
+			<p class="user2"><time>1:23:45</time> Well, when the president does it, that means it is not illegal.</p>
+			<p class="user3"><time>1:23:45</time> Exactly, exactly. If the president, for example, approves something because of the national security, or in this case because of a threat to internal peace and order of significant magnitude, then the president's decision in that instance is one that enables those who carry it out, to carry it out without violating a law. Otherwise they're in an impossible position.</p>			
+			<p class="user1"><time>1:23:45</time> The point is: the dividing line is the president's judgment?</p>
+			<p class="user2"><time>1:23:45</time> <img src="loading.svg" /></p>
+			<img class="talking user3" src="talking.svg" />
+			<img class="talking user2" src="talking.svg" />
+		</main>
+	</body>
+</html>
