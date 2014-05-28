@@ -8,15 +8,15 @@
   };
 
   var connect = function (cb) {
-    var hostSock = new WebSocket(WEBSOCKET_HOST);
+    // var hostSock = new WebSocket(WEBSOCKET_HOST);
     var guestSock = new WebSocket(WEBSOCKET_HOST);
 
-    hostSock.onopen = function(e) {
-      hostSock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
+    // hostSock.onopen = function(e) {
+    //   hostSock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
 
-      // Process audio
-      process(hostSock, timbre._localStream);
-    };
+    //   // Process audio
+    //   process(hostSock, timbre._localStream);
+    // };
     guestSock.onopen = function(e) {
       guestSock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
 
@@ -24,17 +24,17 @@
       process(guestSock, null, document.querySelector('audio'));
     };
 
-    hostSock.onmessage = function(e) {
-      var response = JSON.parse(event.data);
-      // Check response type
-      if (response[0] === 'result' && response[1].msg_body.length) {
-        cb({
-          name: timbre._name,
-          time: new Date(),
-          message: response[1].msg_body
-        });
-      }
-    };
+    // hostSock.onmessage = function(e) {
+    //   var response = JSON.parse(event.data);
+    //   // Check response type
+    //   if (response[0] === 'result' && response[1].msg_body.length) {
+    //     cb({
+    //       name: timbre._name,
+    //       time: new Date(),
+    //       message: response[1].msg_body
+    //     });
+    //   }
+    // };
     guestSock.onmessage = function(e) {
       var response = JSON.parse(event.data);
       // Check response type
@@ -60,6 +60,8 @@
     } else if (element) {
       source = context.createMediaElementSource(element);
     }
+
+    debugger;
 
     // Set up pause detection
     var speech, pause;
@@ -135,5 +137,5 @@
     processor.connect(context.destination);
   };
 
-  timbre.connect = connect;
+  timbre.on = on;
 }(this.timbre) );
