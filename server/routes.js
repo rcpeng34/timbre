@@ -2,6 +2,7 @@ module.exports = function(app){
   var storage = {};
   var transcriptions = null;
   app.get('/call/:name', function(req, res){
+    console.log(req.params.name);
     if (storage[req.params.name]) {
       res.send('true');
     } else {
@@ -25,6 +26,7 @@ module.exports = function(app){
   app.post('/transcription', function(req, res){
     // updates most recent
     transcriptions = req.body.transcription;
+    console.log(transcriptions);
     if (transcriptions) { 
       res.send(true)
     } else {
