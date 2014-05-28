@@ -19,47 +19,40 @@ app.config(['$routeProvider',function($routeProvider){
     controller: 'GuestController'
   })
   .otherwise('/');
-}])
-var messages = [ 
-    {
-      user: 'user3',
-      time: '5:05:05',
-      message: 'This will be the text of a message from user 3'
-    },
-    {
-      user: 'user1',
-      time: '6:06:06',
-      message: 'This is a reponse from user 1'  
-    },
-    {
-      user: 'user2',
-      time: '6:06:06',
-      message: 'This is a reponse from user 2'  
-    }
-  ];
+}]);
 
 app.run(function($rootScope){
   $rootScope.name = 'helloworld';
 });
 
 app.controller('HostController', ['$scope', '$interval', '$routeParams', '$socket', function($scope, $interval, $routeParams, $socket){
-  $scope.interview = messages;
+  timbre.init($routeParams.name, console.log.bind(console));
+  $scope.interview = [];
   $scope.hostName = $routeParams.name;
   $scope.wasCalled = false;
   $scope.called = function(){
-     $scope.wasCalled = true;
-  }
-  $interval(function(){
-    messages.push({
-        user: 'user2',
-        time: '6:06:06',
-        message: 'This is a reponse from user 2'  
-      })
-  }, 10000);
+    timbre.call($scope.toCall);
+    $scope.wasCalled = true;
+    $socket.emit('call', true);
+    timbre.on('transcribe', function(transcription) {
+      $scope.interview.push(transcription);
+    });
+    $scope.on('transcript', function (transcription) {
+      $scope.interview.push(transcription);
+    });
+  };
 }]);
 
 app.controller('GuestController', ['$scope','$routeParams', '$socket', function($scope, $routeParams, $socket){
+  timbre.init($routeParams.name);
   $scope.me = "guest";
   $scope.guestName = $routeParams.name;
+  $scope.on('call',
+    function(data) {
+      timbre.on('transcribe', function(transcription) {
+        $scope.emit('transcript', transcription);
+      });
+    }
+  );
 }]);
 
