@@ -24,7 +24,7 @@ app.run(function($rootScope){
   $rootScope.name = 'helloworld';
 });
 
-app.controller('HostController', ['$scope', '$interval', '$routeParams', function($scope, $interval, $routeParams){
+app.controller('HostController', ['$scope', '$interval', '$routeParams', '$http',function($scope, $interval, $routeParams, $http){
   timbre.init($routeParams.name, console.log.bind(console));
   $scope.interview = [];
   $scope.hostName = $routeParams.name;
@@ -50,7 +50,7 @@ app.controller('HostController', ['$scope', '$interval', '$routeParams', functio
   called();
 }]);
 
-app.controller('GuestController', ['$scope','$routeParams', '$httpProvider', function($scope, $routeParams, $httpProvider){
+app.controller('GuestController', ['$scope','$routeParams', '$http', function($scope, $routeParams, $http){
   timbre.init($routeParams.name, console.log.bind(console));
   $scope.me = "guest";
   $scope.guestName = $routeParams.name;
