@@ -18,51 +18,49 @@ app.config(['$routeProvider',function($routeProvider){
     controller: 'GuestController'
   })
   .otherwise('/');
-}])
-var messages = [ 
-    {
-      user: 'Interviewer',
-      time: '5:05:05',
-      message: 'How are you?'
-    },
-    {
-      user: 'Dracula',
-      time: '5:06:06',
-      message: 'It is night'  
-    },
-    {
-      user: 'Dracula',
-      time: '5:07:06',
-      message: 'I vant to suck your blood'  
-    }
-  ];
+}]);
 
 app.run(function($rootScope){
   $rootScope.name = 'helloworld';
 });
 
-app.controller('HostController', ['$scope', '$interval', '$routeParams', function($scope, $interval, $routeParams){
+app.controller('HostController', ['$scope', '$interval', '$routeParams', '$http',function($scope, $interval, $routeParams, $http){
+  timbre.init($routeParams.name, console.log.bind(console));
   $scope.interview = [];
   $scope.hostName = $routeParams.name;
-  $scope.wasCalled = false;
-  $scope.called = function(){
-     $scope.wasCalled = true;
-  }
-  $interval(function(){
-    $scope.interview.push({
-        user: 'Dracula',
-        time: '7:06:06',
-        message: 'I vant to suck your blood'  
-      })
-  }, 1000);
+  var called = function() {
+    $http.get('/call/$routeParams.name').success(function(data) {
+      if (data) {
+        timbre.on('transcribe', function(transcription) {
+          $scope.interview.push(transcription);
+        });
+        window.setInterval(getTranscriptions(), 5000);
+      } else {
+        window.setInterval(called, 2500);
+      }
+    });
+  };
+  var getTranscriptions = function() {
+    $http.get('/transcription').success(function(data) {
+      if (data) {
+        $scope.interview.push(transcription);
+      }
+    });
+  };
+  called();
 }]);
 
-app.controller('GuestController', ['$scope','$routeParams', function($scope, $routeParams){
+app.controller('GuestController', ['$scope','$routeParams', '$http', function($scope, $routeParams, $http){
+  timbre.init($routeParams.name, console.log.bind(console));
   $scope.me = "guest";
   $scope.guestName = $routeParams.name;
-  $scope.wasCalled = false;
-  $scope.called = function(){
-     $scope.wasCalled = true;
-  }
+  $scope.called = function () {
+    timbre.call($scope.toCall)
+    $http.post('http://localhost:3000/call', {name: $scope.toCall});
+    timbre.on('transcribe', function(transcription) {
+        $http.post('http://localhost:3000/transcription', {transcription: transcription});
+        console.log('sent a transcription');
+    });
+  };
 }]);
 

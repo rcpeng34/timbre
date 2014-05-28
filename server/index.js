@@ -3,8 +3,9 @@
 var express     = require("express");
 var port        = process.env.PORT || 3000;
 var app         = express();
+var server      = require('http').createServer(app);
 var bodyParser  = require('body-parser');
-var websocket   = require('socket.io');
+
 
 app.use(bodyParser());
 app.use(function(req, res, next) {
@@ -23,24 +24,5 @@ app.use(express.static(__dirname + '/client'));
 require("./routes.js")(app);
 
 app.listen(port);
-var io = websocket.listen(app);
-
-io.sockets.on('connection', function (socket) {
-  io.sockets.emit('connection made', { test: 'connected' });
-
-  socket.on('transcript', function (from, data) {
-    console.log('I received a transcript from ', from, ' saying ', msg);
-    sockets.broadcast.json.send(data);
-  });
-
-  socket.on('call', function (from, msg) {
-    console.log('I received a call by ', from, ' saying ', msg);
-    sockets.broadcast.emit(msg);
-  });
-
-  socket.on('disconnect', function () {
-    io.sockets.emit('user disconnected');
-  });
-});
 
 console.log('Server listening on port: ' + port);
