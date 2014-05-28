@@ -23,8 +23,8 @@
 
 			<!-- begin angular testing -->
 			<div ng-app='transcribeApp'>
-				<div>
-				{{name}}
+				<div ng-controller='MessageController'>
+				<p class={{message.speaker}}><time>{{message.time}}</time>{{message.text}}</p>
 				</div>
 			</div>
 
