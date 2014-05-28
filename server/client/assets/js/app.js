@@ -63,10 +63,10 @@ app.controller('GuestController', ['$scope','$routeParams', '$http', function($s
   $scope.called = function () {
     $scope.wasCalled = true;
     timbre.call($scope.toCall);
-    $http.post('http://localhost:3000/call', {name: $scope.toCall});
+    $http.post('http://timbre.herokuapp.com/call', {name: $scope.toCall});
     console.log('sent for ' + $scope.toCall);
     timbre.on('transcribe', function(transcription) {
-        $http.post('http://localhost:3000/transcription', {transcription: transcription});
+        $http.post('http://timbre.herokuapp.com/transcription', {transcription: transcription});
         console.log('sent a transcription');
     });
   };
