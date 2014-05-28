@@ -1,0 +1,21 @@
+{
+  "name": "timbre",
+  "version": "0.1.0",
+  "homepage": "https://github.com/adrichman/timbre",
+  "authors": [
+    "Adam D Richman <ar@adamrichman.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.1.1"
+  }
+}
