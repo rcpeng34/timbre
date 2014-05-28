@@ -24,10 +24,11 @@
 			<!-- begin angular testing -->
 			<div ng-app='transcribeApp'>
 				<div ng-controller='MessageController'>
-				<p class={{message.speaker}}><time>{{message.time}}</time>{{message.text}}</p>
+					<div ng-repeat='message in interview'>
+						<p class={{message.speaker}}><time>{{message.time}}</time>{{message.text}}</p>
+					</div>
 				</div>
 			</div>
-
 		</main>
 	</body>
 </html>
