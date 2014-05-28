@@ -4,6 +4,6 @@
     <button ng-hide="wasCalled" id="toCallButton" style="width: 125px; height: 40px; border: 1px solid black; border-radius: 4px;" type="Submit" ng-click="called()">Call {{ toCall }}</button>
   </div>
   <div ng-show="wasCalled" ng-repeat='message in interview'>
-    <p class={{message.speaker}}><time>{{message.time}}</time>{{message.text}}</p>
+    <p class="user2"><time>{{message.user}} ({{message.time}})</time>{{message.message}}</p>
   </div>
 </div>

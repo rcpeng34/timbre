@@ -21,19 +21,19 @@ app.config(['$routeProvider',function($routeProvider){
 }])
 var messages = [ 
     {
-      speaker: 'user3',
+      user: 'user3',
       time: '5:05:05',
-      text: 'This will be the text of a message from user 3'
+      message: 'This will be the text of a message from user 3'
     },
     {
-      speaker: 'user1',
+      user: 'user1',
       time: '6:06:06',
-      text: 'This is a reponse from user 1'  
+      message: 'This is a reponse from user 1'  
     },
     {
-      speaker: 'user2',
+      user: 'user2',
       time: '6:06:06',
-      text: 'This is a reponse from user 2'  
+      message: 'This is a reponse from user 2'  
     }
   ];
 
@@ -50,9 +50,9 @@ app.controller('HostController', ['$scope', '$interval', '$routeParams', functio
   }
   $interval(function(){
     messages.push({
-        speaker: 'user2',
+        user: 'user2',
         time: '6:06:06',
-        text: 'This is a reponse from user 2'  
+        message: 'This is a reponse from user 2'  
       })
   }, 10000);
 }]);
