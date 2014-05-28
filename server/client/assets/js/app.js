@@ -4,7 +4,8 @@
 
 // ********** End Helper Functions *********
 var app = angular.module('transcribeApp', [
-  'ngRoute'
+  'ngRoute',
+  'ngSocket'
 ]);
 
 app.config(['$routeProvider',function($routeProvider){
@@ -41,7 +42,7 @@ app.run(function($rootScope){
   $rootScope.name = 'helloworld';
 });
 
-app.controller('HostController', ['$scope', '$interval', '$routeParams', function($scope, $interval, $routeParams){
+app.controller('HostController', ['$scope', '$interval', '$routeParams', '$socket', function($scope, $interval, $routeParams, $socket){
   $scope.interview = messages;
   $scope.hostName = $routeParams.name;
   $scope.wasCalled = false;
@@ -57,7 +58,7 @@ app.controller('HostController', ['$scope', '$interval', '$routeParams', functio
   }, 10000);
 }]);
 
-app.controller('GuestController', ['$scope','$routeParams', function($scope, $routeParams){
+app.controller('GuestController', ['$scope','$routeParams', '$socket', function($scope, $routeParams, $socket){
   $scope.me = "guest";
   $scope.guestName = $routeParams.name;
 }]);
