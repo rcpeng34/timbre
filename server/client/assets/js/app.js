@@ -57,16 +57,10 @@ app.controller('GuestController', ['$scope','$routeParams', '$httpProvider', fun
   $scope.called = function () {
     timbre.call($scope.toCall)
     $http.post('http://localhost:3000/call', {name: $scope.toCall});
-  };
-  $socket.on('call',
-    function(data) {
-    console.log('received a call with ' + data);
-      timbre.call(data);
-      timbre.on('transcribe', function(transcription) {
-        $socket.emit('transcript', transcription);
+    timbre.on('transcribe', function(transcription) {
+        $http.post('http://localhost:3000/transcription', {transcription: transcription});
         console.log('sent a transcription');
-      });
-    }
-  );
+    });
+  };
 }]);
 
