@@ -1,0 +1,24 @@
+{
+  "name": "timbre",
+  "version": "0.0.0",
+  "description": "timbre ======",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcpeng34/timbre.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rcpeng34/timbre/issues"
+  },
+  "homepage": "https://github.com/rcpeng34/timbre",
+  "dependencies": {
+    "express": "^4.3.1",
+    "http": "0.0.0"
+  }
+}
