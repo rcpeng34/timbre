@@ -8,39 +8,21 @@
   };
 
   var connect = function (cb) {
-    // var hostSock = new WebSocket(WEBSOCKET_HOST);
-    var guestSock = new WebSocket(WEBSOCKET_HOST);
+    var witsock = new WebSocket(WEBSOCKET_HOST);
 
-    // hostSock.onopen = function(e) {
-    //   hostSock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
-
-    //   // Process audio
-    //   process(hostSock, timbre._localStream);
-    // };
-    guestSock.onopen = function(e) {
+    witock.onopen = function(e) {
       guestSock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
 
       // Process audio
-      process(guestSock, null, document.querySelector('audio'));
+      process(witsock, timbre._localStream);
     };
 
-    // hostSock.onmessage = function(e) {
-    //   var response = JSON.parse(event.data);
-    //   // Check response type
-    //   if (response[0] === 'result' && response[1].msg_body.length) {
-    //     cb({
-    //       name: timbre._name,
-    //       time: new Date(),
-    //       message: response[1].msg_body
-    //     });
-    //   }
-    // };
-    guestSock.onmessage = function(e) {
+    witsock.onmessage = function(e) {
       var response = JSON.parse(event.data);
       // Check response type
       if (response[0] === 'result' && response[1].msg_body.length) {
         cb({
-          name: document.querySelector('audio').id,
+          name: timbre._name,
           time: new Date(),
           message: response[1].msg_body
         });
@@ -48,20 +30,13 @@
     };
   };
 
-  var process = function (witsock, stream, element) {
+  var process = function (witsock, stream) {
     // Set up audio context
     var context = new window.webkitAudioContext();
     var analyser = context.createAnalyser();
     // Buffer of 4096 to mirror wit microphone.js
     var processor = context.createScriptProcessor(4096, 1, 1);
-    var source;
-    if (stream) {
-      source = context.createMediaStreamSource(stream);
-    } else if (element) {
-      source = context.createMediaElementSource(element);
-    }
-
-    debugger;
+    var source = context.createMediaStreamSource(stream);
 
     // Set up pause detection
     var speech, pause;
@@ -71,6 +46,7 @@
     var pauseDuration = 0;
     var stopped = true;
 
+    // Measure immediate noise level
     analyser.smoothingTimeConstant = 0;
 
     processor.onaudioprocess = function(e) {
