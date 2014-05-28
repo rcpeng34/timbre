@@ -39,21 +39,44 @@ main {
   max-width: 800px;
   }
   
+  .start {
+    width: 30rem;
+    height: 10rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -5rem 0 0 -15rem;
+    text-align: center;
+    }
+
+    .start input {
+      padding: 5px 10px;
+      border: 2px solid #666;
+      font: 16px/28px Lucida Grande;
+    }
+
+    .start button {
+      color: #fff;
+      background: #E74C3C;
+      padding: 5px 10px;
+      font: bold 16px/28px Lucida Grande;      
+      }
+
   p {
     clear: both;
     margin: 2em 0;
     padding: 0 0 5px 16px;
   }
   
-  p.user1 {
+  p.host {
     margin-left: 30%;
     }
-  p:not(.user1) {
+  p:not(.host) {
     margin-right: 30%;
     border-left: 7px solid #4A90E2;
     }
   
-  p.user3 {border-color: #F5A623}
+/*  p.user3 {border-color: #F5A623} */
   
   time {
     display: block;

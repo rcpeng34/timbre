@@ -21,19 +21,19 @@ app.config(['$routeProvider',function($routeProvider){
 }])
 var messages = [ 
     {
-      user: 'user3',
+      user: 'Interviewer',
       time: '5:05:05',
-      message: 'This will be the text of a message from user 3'
+      message: 'How are you?'
     },
     {
-      user: 'user1',
-      time: '6:06:06',
-      message: 'This is a reponse from user 1'  
+      user: 'Dracula',
+      time: '5:06:06',
+      message: 'It is night'  
     },
     {
-      user: 'user2',
-      time: '6:06:06',
-      message: 'This is a reponse from user 2'  
+      user: 'Dracula',
+      time: '5:07:06',
+      message: 'I vant to suck your blood'  
     }
   ];
 
@@ -42,23 +42,27 @@ app.run(function($rootScope){
 });
 
 app.controller('HostController', ['$scope', '$interval', '$routeParams', function($scope, $interval, $routeParams){
-  $scope.interview = messages;
+  $scope.interview = [];
   $scope.hostName = $routeParams.name;
   $scope.wasCalled = false;
   $scope.called = function(){
      $scope.wasCalled = true;
   }
   $interval(function(){
-    messages.push({
-        user: 'user2',
-        time: '6:06:06',
-        message: 'This is a reponse from user 2'  
+    $scope.interview.push({
+        user: 'Dracula',
+        time: '7:06:06',
+        message: 'I vant to suck your blood'  
       })
-  }, 10000);
+  }, 1000);
 }]);
 
 app.controller('GuestController', ['$scope','$routeParams', function($scope, $routeParams){
   $scope.me = "guest";
   $scope.guestName = $routeParams.name;
+  $scope.wasCalled = false;
+  $scope.called = function(){
+     $scope.wasCalled = true;
+  }
 }]);
 

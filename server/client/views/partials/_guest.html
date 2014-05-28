@@ -1,2 +1,5 @@
-<div> I am the {{ me }} </div>
-<div> My name is {{ guestName }}</div>
+<div class="start">
+  <input ng-hide="wasCalled" id="toCallInput" ng-model="toCall" value="{{ toCall }}">
+  <button ng-hide="wasCalled" id="toCallButton" type="Submit" ng-click="called()">Start the Conversation</button>
+  <img ng-show="wasCalled" src="assets/img/microphone.svg" />
+</div>
