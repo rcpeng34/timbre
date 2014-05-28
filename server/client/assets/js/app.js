@@ -2,10 +2,24 @@
 
 // ********** Helper Functions *********
 
-var getMessages = function (){
-  // should return all messages to display as an array
+// ********** End Helper Functions *********
+var app = angular.module('transcribeApp', [
+  'ngRoute'
+]);
 
-  return [ 
+app.config(['$routeProvider',function($routeProvider){
+  $routeProvider
+  .when('/host/:name',{
+    templateUrl: 'views/partials/_host.html',
+    controller: 'HostController'
+  })
+  .when('/guest/:name',{
+    templateUrl: 'views/partials/_guest.html',
+    controller: 'GuestController'
+  })
+  .otherwise('/');
+}])
+var messages = [ 
     {
       speaker: 'user3',
       time: '5:05:05',
@@ -22,18 +36,29 @@ var getMessages = function (){
       text: 'This is a reponse from user 2'  
     }
   ];
-};
-
-// ********** End Helper Functions *********
-
-var app = angular.module('transcribeApp', []);
-var messages = getMessages();
 
 app.run(function($rootScope){
   $rootScope.name = 'helloworld';
 });
 
-app.controller('MessageController', function($scope){
+app.controller('HostController', ['$scope', '$interval', '$routeParams', function($scope, $interval, $routeParams){
   $scope.interview = messages;
-});
+  $scope.hostName = $routeParams.name;
+  $scope.wasCalled = false;
+  $scope.called = function(){
+     $scope.wasCalled = true;
+  }
+  $interval(function(){
+    messages.push({
+        speaker: 'user2',
+        time: '6:06:06',
+        text: 'This is a reponse from user 2'  
+      })
+  }, 10000);
+}]);
+
+app.controller('GuestController', ['$scope','$routeParams', function($scope, $routeParams){
+  $scope.me = "guest";
+  $scope.guestName = $routeParams.name;
+}]);
 
