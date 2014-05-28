@@ -11,7 +11,7 @@
     var witsock = new WebSocket(WEBSOCKET_HOST);
 
     witsock.onopen = function(e) {
-      guestSock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
+      witsock.send(JSON.stringify(['auth', 'ATMHGCDP74KFTTR647Y3ZUZCDSBMPJB6']));
 
       // Process audio
       process(witsock, timbre._localStream);

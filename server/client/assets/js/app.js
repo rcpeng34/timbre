@@ -4,8 +4,7 @@
 
 // ********** End Helper Functions *********
 var app = angular.module('transcribeApp', [
-  'ngRoute',
-  'ngSocket'
+  'ngRoute'
 ]);
 
 app.config(['$routeProvider',function($routeProvider){
@@ -25,32 +24,33 @@ app.run(function($rootScope){
   $rootScope.name = 'helloworld';
 });
 
-app.controller('HostController', ['$scope', '$interval', '$routeParams', '$socket', function($scope, $interval, $routeParams, $socket){
+app.controller('HostController', ['$scope', '$interval', '$routeParams', function($scope, $interval, $routeParams){
   timbre.init($routeParams.name, console.log.bind(console));
   $scope.interview = [];
   $scope.hostName = $routeParams.name;
   $scope.wasCalled = false;
   $scope.called = function(){
-    timbre.call($scope.toCall);
-    $scope.wasCalled = true;
-    $socket.emit('call', true);
     timbre.on('transcribe', function(transcription) {
       $scope.interview.push(transcription);
     });
-    $scope.on('transcript', function (transcription) {
+    $socket.on('transcript', function (transcription) {
+      console.log('received a transcription');
       $scope.interview.push(transcription);
     });
   };
 }]);
 
-app.controller('GuestController', ['$scope','$routeParams', '$socket', function($scope, $routeParams, $socket){
-  timbre.init($routeParams.name);
+app.controller('GuestController', ['$scope','$routeParams', function($scope, $routeParams){
+  timbre.init($routeParams.name, console.log.bind(console));
   $scope.me = "guest";
   $scope.guestName = $routeParams.name;
-  $scope.on('call',
+  $socket.on('call',
     function(data) {
+    console.log('received a call with ' + data);
+      timbre.call(data);
       timbre.on('transcribe', function(transcription) {
-        $scope.emit('transcript', transcription);
+        $socket.emit('transcript', transcription);
+        console.log('sent a transcription');
       });
     }
   );
