@@ -1,9 +1,5 @@
 <div ng-controller='HostController'>
-  <div>
-    <input ng-hide="wasCalled" id="toCallInput" style="width: 125px; height: 40px; border: 1px solid black; border-radius: 4px;" ng-model="toCall" value="{{ toCall }}">
-    <button ng-hide="wasCalled" id="toCallButton" style="width: 125px; height: 40px; border: 1px solid black; border-radius: 4px;" type="Submit" ng-click="called()">Call {{ toCall }}</button>
-  </div>
   <div ng-show="wasCalled" ng-repeat='message in interview'>
-    <p class="user2"><time>{{message.user}} ({{message.time}})</time>{{message.message}}</p>
+    <p class="user2"><time>{{message.name}} ({{message.time}})</time>{{message.message}}</p>
   </div>
 </div>
