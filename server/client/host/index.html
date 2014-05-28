@@ -14,7 +14,7 @@
       <div class="col-md-6 col-md-offset-3">
         <h1 class="text-center">WebRTC Supercharged With PubNub</h1>
         <input type="text" id="remote-user-input" placeholder="Remote User ID" />
-        <input id="connect" class="btn btn-default" href="#" value="Connect" />
+        <input id="connect" class="btn btn-default" href="#" value="Connect" disabled="disabled"/>
 
         <br />
         <input id="get-user" class="btn btn-default" href="#" value="Get My UserID" /><div id="user-id"><p></p></div>
@@ -89,6 +89,7 @@
     function gotStream(stream) {
       // document.querySelector(‘#self-call-audio).src = URL.createObjectURL(stream);
       myStream = stream; // Save the stream for later use
+      connectButton.disabled = false;
     };
     function handleError(err) {
       console.log(err);
@@ -96,39 +97,40 @@
 
     navigator.webkitGetUserMedia({ audio: true, video: false}, gotStream, handleError);
 
-    hostUser.onNewConnection(function (uuid) {
-      if (myStream != null) {
-        publishStream(uuid);
-      }
-    });
+    // hostUser.onNewConnection(function (uuid) {
+    //   if (myStream != null) {
+    //     publishStream(uuid);
+    //   }
+    // });
   
-    function publishStream(uuid) {
+    var publishStream = function(uuid) {
 
       hostUser.publish({
         user: uuid,
         stream: myStream
       });
-      
+
       hostUser.subscribe({
-        user: remoteUserIdField.value,
-        callback: function (data) {
-          responseBox.innerHTML = data + "<br />" + responseBox.innerHTML;
-          if (data && data.caller && data.caller == hostUserId) {
-            publishStream(data.callee);
-          }
-        },
-        connect: function (uuid, peerConnection) {
+        user: uuid,
+        // callback: function (data) {
+          // responseBox.innerHTML = data + "<br />" + responseBox.innerHTML;
+          // if (data && data.caller && data.caller == hostUserId) {
+            // publishStream(data.callee);
+          // }
+        // },
+        // connect: function (uuid, peerConnection) {
           // Called when the peerConnection is fully established
-          console.log(arguments);
-        },
+          // console.log(arguments);
+        // },
         stream: function(data, event){
           listen(data);
           console.log('////////////////////STREAM ARGUMENTS////////////////////', arguments);
-        },
-        disconnect: function (uuid, peerConnection) {
-          // Called when the peerConnection is closed
-          console.log(arguments);
         }
+        // ,
+        // disconnect: function (uuid, peerConnection) {
+          // Called when the peerConnection is closed
+          // console.log(arguments);
+        // }
       });
      
     };

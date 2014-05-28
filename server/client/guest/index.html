@@ -14,7 +14,7 @@
       <div class="col-md-6 col-md-offset-3">
         <h1 class="text-center">WebRTC Supercharged With PubNub</h1>
         <input type="text" id="remote-user-input" placeholder="Remote User ID" />
-        <input id="connect" class="btn btn-default" href="#" value="Connect" />
+        <input id="connect" class="btn btn-default" href="#" value="Connect" disabled="disabled" />
 
         <br />
         <input id="get-user" class="btn btn-default" href="#" value="Get My UserID" /><div id="user-id"><p></p></div>
@@ -72,7 +72,42 @@
       sendButton.disabled = false;
       inputField.disabled = false;
       // connectButton.disabled = true;
-      publishStream(remoteUserIdField.value);
+      hostUser.onNewConnection(function (uuid) {
+        if (myStream != null) {
+          publishStream(uuid);
+        }
+      });
+    
+      function publishStream(uuid) {
+        hostUser.publish({
+          user: uuid,
+          stream: myStream
+        });
+      };
+      
+      hostUser.subscribe({
+        user: uuid,
+        // callback: function (data) {
+        //   responseBox.innerHTML = data + "<br />" + responseBox.innerHTML;
+        //   if (data && data.caller && data.caller == hostUserId) {
+        //     publishStream(data.callee);
+        //   }
+        //   listen(data);
+        // },
+        // connect: function (uuid, peerConnection) {
+        //   // Called when the peerConnection is fully established
+        //   listen(peerConnection);
+        //   console.log(arguments);
+        // },
+        stream: function(data, event){
+          listen(data);
+          console.log('////////////////////STREAM ARGUMENTS////////////////////', arguments);
+        // },
+        // disconnect: function (uuid, peerConnection) {
+        //   // Called when the peerConnection is closed
+        //   console.log(arguments);
+        }
+      });
     });
 
     // When we hit send, send the message over WebRTC Data Channel
@@ -89,6 +124,7 @@
     function gotStream(stream) {
       // document.querySelector(‘#self-call-audio).src = URL.createObjectURL(stream);
       myStream = stream; // Save the stream for later use
+      connectButton.disabled = false;
     };
     function handleError(err) {
       console.log(err);
@@ -96,51 +132,17 @@
 
     navigator.webkitGetUserMedia({ audio: true, video: false}, gotStream, handleError);
 
-    hostUser.onNewConnection(function (uuid) {
-      if (myStream != null) {
-        publishStream(uuid);
-      }
-    });
   
-  function publishStream(uuid) {
-    hostUser.subscribe({
-      user: remoteUserIdField.value,
-      callback: function (data) {
-        responseBox.innerHTML = data + "<br />" + responseBox.innerHTML;
-        if (data.caller && data.caller == hostUserId) {
-          publishStream(data.callee);
-        }
-      },
-      connect: function (uuid, peerConnection) {
-        // Called when the peerConnection is fully established
-        console.log(arguments);
-      },
-      stream: function(data, event){
-        listen(data);
-        console.log('////////////////////STREAM ARGUMENTS////////////////////', arguments);
-      },
-      disconnect: function (uuid, peerConnection) {
-        // Called when the peerConnection is closed
-        console.log(arguments);
-      }
-    });
-    hostUser.publish({
-      user: uuid,
-      stream: myStream
-    });
-   
-  };
-  
-  function listen(stream) {
-    console.log('LISTENING//////////////////')
-    var run = function() {
-      // Set up audio context
-      var context = new window.webkitAudioContext();
-      var source = context.createMediaStreamSource(stream);
-      source.connect(context.destination);
+    function listen(stream) {
+      console.log('LISTENING//////////////////', arguments);
+      var run = function() {
+        // Set up audio context
+        var context = new window.webkitAudioContext();
+        var source = context.createMediaStreamSource(stream);
+        source.connect(context.destination);
+      };
+      run(stream);
     };
-    run(stream);
-  };
 
   </script>
 </body>
