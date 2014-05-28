@@ -1,22 +1,23 @@
 ( function (global) {
   if (!PUBNUB) throw 'PUBNUB required, see pubnub.com';
 
+  var timbre = global.timbre = global.timbre || {};
+
   // Polyfill WebRTC
   navigator.getUserMedia =
     navigator.GetUserMedia || navigator.webkitGetUserMedia;
 
   var pubnub,
-    currentCall,
     localStream;
 
   var gUMSuccess = function (name, cb, stream) {
-    localStream = stream;
+    timbre._localStream = localStream = stream;
     initialize(name, cb);
   };
 
   // Initialize pubnub
   var initialize = function (name, cb) {
-    uuid = name;
+    timbre._name = uuid = name;
 
     pubnub = PUBNUB.init({
       publish_key: 'pub-c-7070d569-77ab-48d3-97ca-c0c3f7ab6403',
@@ -61,7 +62,6 @@
     });
   };
 
-  var timbre = global.timbre = global.timbre || {};
   timbre.init = init;
   timbre.call = call;
 }(this) );
